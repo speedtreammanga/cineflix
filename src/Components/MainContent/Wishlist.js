@@ -83,6 +83,7 @@ export default function Wishlist() {
 		selectedMovieTrailers &&	console.log("SelectedMovieTrailers length",selectedMovieTrailers.length)
 	}, [selectedMovieTrailers])
 
+
 	React.useEffect(()=>{
 		setRefresh(false)
 	}, [refresh])
@@ -208,6 +209,7 @@ export default function Wishlist() {
 											<button className={indexOfSelectedMovie !== JSON.parse(window.localStorage.getItem('wishlist')).length - 1? "nextSelectedMovieBtn":"nextSelectedMovieBtn--disabled"} onClick={()=>changeSelectedMovie("+")}>{`>>`}</button>
 										</div>
 
+										{ (selectedMovieTrailers.length !== 0) &&
 										<iframe
 										className="wishlist--video"
 										src={`https://www.youtube-nocookie.com/embed/${selectedMovieTrailers[currentTrailer].key}?autoplay=1`}
@@ -217,7 +219,9 @@ export default function Wishlist() {
 										title="trailer"
 										ref={wishlistVideo}
 										onLoad={()=>{console.log("LOADED TRAILER:",wishlistVideo.current)}}
-										/>
+										/>}
+										{ (selectedMovieTrailers.length === 0) &&
+										<p>No trailers were found for this movie</p>}
 
 										<div className="wishlist--videoContainer--buttons">
 											<button onClick={()=>changeTrailer(selectedMovie, "-")} className={currentTrailer>0? "wishlist--prevTrailerBtn--active":"wishlist--prevTrailerBtn--disabled"}>{"<"}</button>
