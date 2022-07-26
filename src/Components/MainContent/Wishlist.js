@@ -24,6 +24,7 @@ export default function Wishlist() {
   const [isMobile, setIsMobile, backdropDesktop, setBackdropDesktop, language, setLanguage] = useOutletContext();
 
 	React.useEffect(()=>{
+		
 		console.log("wishlist:", wishlist)
 	}, [])
 
@@ -61,12 +62,14 @@ export default function Wishlist() {
 		selectedMovie && popUpMovie(selectedMovie)
 
 		let myWishlist = JSON.parse(window.localStorage.getItem('wishlist'))
-		for(let i=0; i<myWishlist.length; i++){
-		 	
-			if(selectedMovie){
-				if(myWishlist[i].title === selectedMovie.title){
-					setIndexOfSelectedMovie(i)
-					break;
+		if (myWishlist) {
+			for(let i=0; i<myWishlist.length; i++){
+				 
+				if(selectedMovie){
+					if(myWishlist[i].title === selectedMovie.title){
+						setIndexOfSelectedMovie(i)
+						break;
+					}
 				}
 			}
 		}
@@ -74,8 +77,10 @@ export default function Wishlist() {
 
 	React.useEffect(()=>{
 		let myWishlist = JSON.parse(window.localStorage.getItem('wishlist'))
-		setSelectedMovie(myWishlist[indexOfSelectedMovie])
-		console.log(indexOfSelectedMovie)
+		if (myWishlist) {
+			setSelectedMovie(myWishlist[indexOfSelectedMovie])
+			console.log(indexOfSelectedMovie)
+		}
 
 	}, [indexOfSelectedMovie])
 
@@ -166,14 +171,13 @@ export default function Wishlist() {
 		setSelectedMovie(movie);
 	}
 
-
 	return (
 		<div className={clsx({
 			"Wishlist":true,
 			"Mobile": isMobile
 		})}>
 
-			{wishlist.length === 0?
+			{!wishlist || wishlist.length === 0 ?
 				<div>
 					<h2>You currently have no movies in your wishlist.</h2>
 					<h2>Browse the 'Popular Movies' catalog and add some to your list!</h2>
